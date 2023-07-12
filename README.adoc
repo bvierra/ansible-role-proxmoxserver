@@ -537,6 +537,8 @@ You can also, for example, execute pre-commit's hooks at any time by running `pr
 image:https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square[PRs Welcome]
 https://open.vscode.dev/bvierra/ansible-role-proxmoxserver[image:https://img.shields.io/static/v1?logo=visualstudiocode&label=&message=Open%20in%20Visual%20Studio%20Code&labelColor=2c2c32&color=007acc&logoColor=007acc[Open in Visual Studio Code]]
 
+Unresolved directive in README.orig.adoc - include::CONTRIBUTING.adoc[]
+
 
 [[changelog]]
 == 🗒 Changelog
