@@ -1,0 +1,294 @@
+= ansible-role-proxmoxserver
+Billy Vierra <bvierra@gmail.com>;
+:toc:
+:toclevels: 2
+:toc-placement!:
+:source-highlighter: rouge
+
+ifdef::env-github[]
+// https://gist.github.com/dcode/0cfbf2699a1fe9b46ff04c41721dda74#admonitions
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+
+https://galaxy.ansible.com/bvierra/proxmoxserver[image:https://img.shields.io/badge/available%20on%20ansible%20galaxy-bvierra.proxmoxserver-brightgreen[Version on Galaxy]]
+// Very Relevant Status Badges
+https://github.com/bvierra/ansible-role-proxmoxserver/actions/workflows/ci.yml[image:https://github.com/bvierra/ansible-role-proxmoxserver/actions/workflows/ci.yml/badge.svg[Testing CI]]
+
+
+An Ansible role for For setting up a Proxmox node.
+
+
+toc::[]
+
+[[meta]]
+== 🔎 Metadata
+Below you can find information on…
+
+* the role's required Ansible version
+* the role's supported platforms
+* the role's https://docs.ansible.com/ansible/latest/user_guide/playbooks_reuse_roles.html#role-dependencies[role dependencies]
+
+.link:meta/main.yml[]
+[source,yaml]
+----
+include::meta/main.yml[]
+----
+
+
+[[requirements]]
+== 📌 Requirements
+// Any prerequisites that may not be covered by this role or Ansible itself should be mentioned here.
+The Ansible User needs to be able to `become`.
+
+
+The https://galaxy.ansible.com/community/general[`community.general` collection]
+must be installed on the Ansible controller.
+
+
+[[variables]]
+== 📜 Role Variables
+// A description of the settable variables for this role should go here
+// and any variables that can/should be set via parameters to the role.
+// Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.)
+// should be mentioned here as well.
+
+[source,yaml]
+----
+variable: default value
+----
+Description
+
+
+[source,yaml]
+----
+variable: [OS-specific by default, see /vars directory]
+----
+Description
+
+
+[source,yaml]
+----
+variable: [OS-specific by default, see /vars directory]
+----
+(Debian/Ubuntu only)
+Description
+
+
+[[public_vars]]
+== 📜 Facts/Variables defined by this role
+
+Each variable listed in this section
+is dynamically defined when executing this role (and can only be overwritten using `ansible.builtin.set_facts`) _and_
+is meant to be used not just internally.
+
+
+[[tags]]
+== 🏷️ Tags
+
+// Checkout https://github.com/tribe29/ansible-collection-tribe29.checkmk/blob/main/roles/server/README.md#tags
+// for an awesome example of grouping tasks using tags
+
+Tasks are tagged with the following
+https://docs.ansible.com/ansible/latest/user_guide/playbooks_tags.html#adding-tags-to-roles[tags]:
+
+[cols="1,1"]
+|===
+|Tag | Purpose
+
+2+| This role does not have officially documented tags yet.
+
+// | download-xyz
+// |
+// | install-prerequisites
+// |
+// | install
+// |
+// | create-xyz
+// |
+|===
+
+You can use Ansible to skip tasks, or only run certain tasks by using these tags. By default, all tasks are run when no tags are specified.
+
+[[dependencies]]
+== 👫 Dependencies
+// A list of other roles should go here,
+// plus any details in regard to parameters that may need to be set for other roles,
+// or variables that are used from other roles.
+
+
+
+[[example_playbooks]]
+== 📚 Example Playbook Usages
+// Including examples of how to use this role in a playbook for common scenarios is always nice for users.
+
+[NOTE]
+====
+This role is part of https://github.com/bvierra/ansible-roles[
+many compatible purpose-specific roles of mine].
+
+The machine needs to be prepared.
+In CI, this is done in `molecule/resources/prepare.yml`
+which sources its soft dependencies from `requirements.yml`:
+
+.link:molecule/resources/prepare.yml[]
+[source,yaml]
+----
+include::molecule/resources/prepare.yml[]
+----
+
+The following diagram is a compilation of the "soft dependencies" of this role
+as well as the recursive tree of their soft dependencies.
+
+image:https://raw.githubusercontent.com/bvierra/ansible-roles/master/graphs/dependencies_proxmoxserver.svg[
+requirements.yml dependency graph of bvierra.proxmoxserver]
+====
+
+.Minimum Viable Play
+====
+[source,yaml]
+----
+roles:
+  - role: bvierra.proxmoxserver
+
+vars:
+  some_var: "some_value"
+----
+====
+
+
+[[tested-distributions]]
+== 🧪 Tested Distributions
+
+A role may work on different *distributions*, like Red Hat Enterprise Linux (RHEL),
+even though there is no test for this exact distribution.
+
+|===
+| OS Family | Distribution | Distribution Release Date | Distribution End of Life | Accompanying Docker Image
+
+| Rocky
+| Rocky Linux 8 (https://www.howtogeek.com/devops/is-rocky-linux-the-new-centos/[RHEL/CentOS 8 in disguise])
+| 2021-06
+| 2029-05
+| https://github.com/geerlingguy/docker-rockylinux8-ansible/actions?query=workflow%3ABuild[image:https://github.com/geerlingguy/docker-rockylinux8-ansible/workflows/Build/badge.svg?branch=master[CI]]
+
+| Rocky
+| Rocky Linux 9
+| 2022-07
+| 2032-05
+| https://github.com/geerlingguy/docker-rockylinux9-ansible/actions?query=workflow%3ABuild[image:https://github.com/geerlingguy/docker-rockylinux9-ansible/workflows/Build/badge.svg?branch=master[CI]]
+
+| RedHat
+| Fedora 35
+| 2021-11
+| 2022-11
+| https://github.com/geerlingguy/docker-fedora35-ansible/actions?query=workflow%3ABuild[image:https://github.com/geerlingguy/docker-fedora35-ansible/workflows/Build/badge.svg?branch=master[CI]]
+
+| RedHat
+| Fedora 36
+| 2022-05
+| 2023-05
+| https://github.com/geerlingguy/docker-fedora36-ansible/actions?query=workflow%3ABuild[image:https://github.com/geerlingguy/docker-fedora36-ansible/workflows/Build/badge.svg?branch=master[CI]]
+
+| RedHat
+| Fedora 37
+| 2022-11
+| 2023-12
+| https://github.com/geerlingguy/docker-fedora37-ansible/actions?query=workflow%3ABuild[image:https://github.com/geerlingguy/docker-fedora37-ansible/workflows/Build/badge.svg?branch=master[CI]]
+
+| RedHat
+| Fedora 38
+| 2023-03
+| 2024-05
+| https://github.com/geerlingguy/docker-fedora38-ansible/actions?query=workflow%3ABuild[image:https://github.com/geerlingguy/docker-fedora38-ansible/workflows/Build/badge.svg?branch=master[CI]]
+
+| Debian
+| Ubuntu 1604
+| 2016-04
+| 2026-04
+| https://github.com/geerlingguy/docker-ubuntu1604-ansible/actions?query=workflow%3ABuild[image:https://github.com/geerlingguy/docker-ubuntu1604-ansible/workflows/Build/badge.svg?branch=master[CI]]
+
+| Debian
+| Ubuntu 1804
+| 2018-04
+| 2028-04
+| https://github.com/geerlingguy/docker-ubuntu1804-ansible/actions?query=workflow%3ABuild[image:https://github.com/geerlingguy/docker-ubuntu1804-ansible/workflows/Build/badge.svg?branch=master[CI]]
+
+| Debian
+| Ubuntu 2004
+| 2021-04
+| 2030-04
+| https://github.com/geerlingguy/docker-ubuntu2004-ansible/actions?query=workflow%3ABuild[image:https://github.com/geerlingguy/docker-ubuntu2004-ansible/workflows/Build/badge.svg?branch=master[CI]]
+
+| Debian
+| Ubuntu 2204
+| 2022-04
+| 2032-04
+| https://github.com/geerlingguy/docker-ubuntu2204-ansible/actions?query=workflow%3ABuild[image:https://github.com/geerlingguy/docker-ubuntu2204-ansible/workflows/Build/badge.svg?branch=master[CI]]
+
+| Debian
+| Debian 10
+| 2019-07
+| 2022-08
+| https://github.com/geerlingguy/docker-debian10-ansible/actions?query=workflow%3ABuild[image:https://github.com/geerlingguy/docker-debian10-ansible/workflows/Build/badge.svg?branch=master[CI]]
+
+| Debian
+| Debian 11
+| 2021-08
+| 2024-07~
+| https://github.com/geerlingguy/docker-debian11-ansible/actions?query=workflow%3ABuild[image:https://github.com/geerlingguy/docker-debian11-ansible/workflows/Build/badge.svg?branch=master[CI]]
+|===
+
+
+[[tested-ansible-versions]]
+== 🧪 Tested Ansible versions
+
+The tested ansible versions try to stay equivalent with the
+https://github.com/ansible-collections/community.general#tested-with-ansible[
+support pattern of Ansible's `community.general` collection].
+As of writing this is:
+
+* 2.11 (Ansible 4)
+* 2.12 (Ansible 5)
+* 2.13 (Ansible 6)
+
+
+[[development]]
+== 📝 Development
+// Badges about Conventions in this Project
+https://conventionalcommits.org[image:https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg[Conventional Commits]]
+https://results.pre-commit.ci/latest/github/bvierra/ansible-role-proxmoxserver/master[image:https://results.pre-commit.ci/badge/github/bvierra/ansible-role-proxmoxserver/master.svg[pre-commit.ci status]]
+// image:https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white[pre-commit, link=https://github.com/pre-commit/pre-commit]
+
+include::DEVELOPMENT.adoc[]
+
+
+[[contributing]]
+== 💪 Contributing
+image:https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square[PRs Welcome]
+https://open.vscode.dev/bvierra/ansible-role-proxmoxserver[image:https://img.shields.io/static/v1?logo=visualstudiocode&label=&message=Open%20in%20Visual%20Studio%20Code&labelColor=2c2c32&color=007acc&logoColor=007acc[Open in Visual Studio Code]]
+
+include::CONTRIBUTING.adoc[]
+
+
+[[changelog]]
+== 🗒 Changelog
+Please refer to the
+https://github.com/bvierra/ansible-role-proxmoxserver/releases[Release Page of this Repository]
+for a human changelog of the corresponding
+https://github.com/bvierra/ansible-role-proxmoxserver/tags[Tags (Versions) of this Project].
+
+Note that this Project adheres to Semantic Versioning.
+Please report any accidental breaking changes of a minor version update.
+
+
+[[license]]
+== ⚖️ License
+
+.link:LICENSE[]
+----
+include::LICENSE[]
+----

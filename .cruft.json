@@ -1,0 +1,27 @@
+{
+  "template": "https://github.com/JonasPammer/cookiecutter-ansible-role.git",
+  "commit": "f1c5d3e14c570f59b7eb108a2b263c5d58b66972",
+  "checkout": null,
+  "context": {
+    "cookiecutter": {
+      "full_name": "Billy Vierra",
+      "email": "bvierra@gmail.com",
+      "code_of_conduct_enforcement_contact_email": "bvierra@gmail.com",
+      "github_username": "bvierra",
+      "open_source_license": [
+        "MIT License",
+        "MIT"
+      ],
+      "galaxy_name": "bvierra",
+      "min_ansible_version": "2.11",
+      "allow_duplicates": "no",
+      "ansible_user_needs_to_become": true,
+      "use_renovate": false,
+      "role_name": "proxmoxserver",
+      "project_slug": "ansible-role-proxmoxserver",
+      "project_short_purpose": "For setting up a Proxmox node",
+      "_template": "https://github.com/JonasPammer/cookiecutter-ansible-role.git"
+    }
+  },
+  "directory": null
+}
