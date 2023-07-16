@@ -1,0 +1,11 @@
+---
+# verify-nodes.yml file of ansible-role bvierra.proxmoxserver
+- name: Gather service fact
+  ansible.builtin.service_facts:
+- name: Fail if pvedaemon is not installed
+  ansible.builtin.fail:
+    msg: "Host {{ ansible_hostname }} is not running proxmox (systemd service pvedaemon does not exist)"
+  when: ansible_facts.services['pvedaemon.service'] is not defined
+- name: Get apt package facts
+  ansible.builtin.package_facts:
+    manager: auto

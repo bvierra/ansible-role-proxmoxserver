@@ -1,7 +1,15 @@
 ---
 # tasks file of ansible-role bvierra.proxmoxserver
-
-- name: check if all variables have been set correctly
+- name: Check if all variables have been set correctly
   ansible.builtin.import_tasks: assert.yml
   run_once: true
   delegate_to: localhost
+
+- name: Setup proxmox node
+  ansible.builtin.import_tasks: proxmox-os.yml
+- name: Setup ansible user
+  ansible.builtin.import_tasks: ansible-user.yml
+  when: manage_ansible_user is true
+- name: Install SDN Module
+  ansible.builtin.import_tasks: install-sdn.yml
+  when: pve_install_sdn is true

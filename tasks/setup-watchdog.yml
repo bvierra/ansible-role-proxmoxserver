@@ -1,0 +1,76 @@
+---
+- name: Setup IPMI
+  when: pve_watchdog_ipmi is true
+  block:
+    # ipmitool is installed to be able to use ipmi_watchdog
+    - name: Install ipmi packages
+      ansible.builtin.package:
+        name: pve_watchdog_ipmi_package
+        state: present
+      when: "'{{ pve_watchdog_ipmi_package }}' not in ansible_facts.packages"
+    # enterprise-numbers.txt is needed to be able to use ipmi_watchdog
+    # without it every call to ipmitools throws an error as it attempts
+    # to lookup the enterprise number for the motherboard
+    - name: Check if enterprise-numbers file exists
+      ansible.builtin.stat:
+        path: pve_watchdog_ipmi_enterprise_numbers_file
+        register: _enterprise_numbers_file
+    - name: Download enterprise-numbers from iana.org
+      ansible.builtin.get_url:
+        url: pve_watchdog_ipmi_enterprise_numbers_url
+        dest: pve_watchdog_ipmi_enterprise_numbers_file
+        mode: "0640"
+      when: _enterprise_numbers_file.stat.exists is false
+    # We don't need nmi_watchdog (kernel watchdog that creates an interrupt
+    # and checks to see if interrupt calls have incresed, if not it invokes a kernel panic)
+    # when we are using ipmi watchdog.
+    - name: Unload nmi_watchdog
+      community.general.modprobe:
+        name: nmi_watchdog
+        state: absent
+    # Proxmox recommend disabling nmi_watchdog through the kernel args
+    # However that is only needed with kernel < 2.6.18–238
+    # Source: https://medium.com/@yildirimabdrhm/nmi-watchdog-on-linux-ae3b4c86e8d8
+    - name: Disable nmi_watchdog
+      ansible.posix.sysctl:
+        name: kernel.nmi_watchdog
+        value: "0"
+        sysctl_set: true
+        state: present
+        reload: true
+    # Softdog is a kernel module that is used to reboot the system if the system hangs.
+    # It is used by watchdog-mux to reboot the system if the watchdog fails.
+    # We need to unload it so that watchdog-mux can use ipmi_watchdog instead.
+    - name: Unload softdog
+      community.general.modprobe:
+        name: softdog
+        state: absent
+      ignore_errors: true
+      register: _softdog_unload
+
+    - name: Remove softdog
+      when: _softdog_unload is failed
+      block:
+        - name: Stop watchdog-mux
+          ansible.builtin.service:
+            name: watchdog-mux
+            state: stopped
+          notify:
+            - restart watchdog-mux
+        - name: Unload softdog
+          community.general.modprobe:
+            name: softdog
+            state: absent
+
+    - name: Setup ipmi_watchdog modprobe options
+      ansible.builtin.copy:
+        content: "options ipmi_watchdog action={{ pve_watchdog_ipmi_action }} panic_wdt_timeout=10"
+        dest: /etc/modprobe.d/ipmi_watchdog.conf
+        mode: "0640"
+    - name: Set watchdog-mux config to use ipmi_watchdog
+      ansible.builtin.copy:
+        content: "WATCHDOG_MODULE=ipmi_watchdog" # pragma: allowlist secret
+        dest: /etc/default/pve-ha-manager
+        mode: "0640"
+      notify:
+        - restart watchdog-mux

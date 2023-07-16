@@ -1,0 +1,18 @@
+---
+- name: Install SDN onto all Proxmox hosts
+  when: pve_install_sdn is true
+  block:
+    - name: Install SDN
+      ansible.builtin.apt:
+        name: "{{ pve_sdn_package }}"
+        state: present
+        update_cache: false
+      when: pve_install_sdn is true
+      notify: restart pveproxy
+    - name: Add source of interface.d to /etc/network/interfaces
+      ansible.builtin.lineinfile:
+        path: /etc/network/interfaces
+        regexp: '^source /etc/network/interfaces.d/\*$'
+        line: "source /etc/network/interfaces.d/*"
+        state: present
+      when: pve_install_sdn is true

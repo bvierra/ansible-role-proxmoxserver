@@ -1,0 +1,36 @@
+---
+- name: Setup user for ansible to use
+  when: ansible_user_name is defined
+  block:
+    - name: "Generating SSH Key for {{ ansible_user_name }}"
+      delegate_to: localhost
+      community.crypto.openssh_keypair:
+        path: "{{ ansible_user_ssh_key_dir }}/{{ ansible_user_ssh_key_name }}"
+        type: "{{ ansible_user_ssh_key_type }}"
+        size: "{{ ansible_user_ssh_key_size }}"
+        regenerate: "{{ ansible_user_regenerate_ssh_key if ansible_user_regenerate_ssh_key is defined else 'never' }}"
+        state: present
+      register: _ansible_user_ssh_private_key
+    - name: "Creating user {{ ansible_user_name }}"
+      ansible.builtin.user:
+        name: "{{ ansible_user_name }}"
+        password: "{{ ansible_user_password if ansible_user_password is defined else '!' }}"
+        createhome: true
+        comment: "{{ ansible_user_comment if ansible_user_comment is defined else '' }}"
+        state: present
+    - name: Adding ssh public keys to authorized_keys
+      ansible.posix.authorized_key:
+        user: "{{ ansible_user_name }}"
+        key: "{{ _ansible_user_ssh_private_key.public_key }}"
+        manage_dir: true
+        state: present
+        comment: "ansible@core"
+    - name: Adding ansible user to sudoers
+      # noqa: args[module]
+      ansible.builtin.template:
+        src: sudoers.j2
+        dest: "/etc/sudoers.d/{{ ansible_user_name }}"
+        owner: root
+        group: root
+        mode: "0440"
+        validate: /usr/sbin/visudo -cf %s

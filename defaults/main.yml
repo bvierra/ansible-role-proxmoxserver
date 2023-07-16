@@ -1,3 +1,42 @@
 ---
 # defaults file of ansible-role bvierra.proxmoxserver
 # See README.adoc for documentation. If you change a default here, also update it in the README.
+####
+# Proxmox Node Configuration
+####
+pve_additional_packages: null
+pve_no_subscription: true
+pve_no_subscription_apt_key_id: 1140AF8F639E0C39
+pve_no_subscription_apt_key_url: https://enterprise.proxmox.com/debian/proxmox-release-bookworm.gpg
+pve_no_subscription_apt_source: deb http://download.proxmox.com/debian/pve bookworm pve-no-subscription
+update_system_packages: true
+_pve_required_packages:
+  - sudo
+  - numactl
+
+####
+# SDN
+####
+pve_install_sdn: false
+pve_sdn_package: libpve-network-perl
+
+####
+# Setup Watchdog
+####
+pve_watchdog_ipmi: false
+pve_watchdog_ipmi_action: reset
+pve_watchdog_ipmi_package: ipmitool
+pve_watchdog_ipmi_enterprise_numbers_file: /usr/share/misc/enterprise-numbers.txt
+pve_watchdog_ipmi_enterprise_numbers_url: https://www.iana.org/assignments/enterprise-numbers.txt
+
+####
+# Ansible User Configuration
+####
+manage_ansible_user: true
+ansible_user_name: ansible
+ansible_user_password: null
+ansible_user_ssh_key_type: ed25519
+ansible_user_ssh_key_size: 521
+ansible_user_ssh_key_dir: ~/.ssh
+ansible_user_ssh_key_name: id_ed25519-ansible
+ansible_user_regenerate_ssh_key: never

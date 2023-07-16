@@ -43,6 +43,7 @@
         "asciidoctor.asciidoctor-vscode",
         "christian-kohler.path-intellisense",
         "EditorConfig.EditorConfig",
+        "amodio.restore-editors",
 
         // ## Ansible Development ##
         "donjayamanne.python-extension-pack",

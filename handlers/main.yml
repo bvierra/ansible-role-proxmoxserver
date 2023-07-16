@@ -1,2 +1,12 @@
 ---
 # handlers file of ansible-role bvierra.proxmoxserver
+- name: Restart watchdog-mux
+  ansible.builtin.service:
+    name: watchdog-mux
+    state: restarted
+  listen: restart watchdog-mux
+- name: Restart pveproxy
+  ansible.builtin.service:
+    name: pveproxy
+    state: restarted
+  listen: restart pveproxy
