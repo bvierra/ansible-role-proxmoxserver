@@ -67,26 +67,69 @@ must be installed on the Ansible controller.
 // Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.)
 // should be mentioned here as well.
 
-[source,yaml]
-----
-variable: default value
-----
-Description
+.Variables - ansible-user
+[%autowidth]
+|===
+| Variable | Type | Default | Comments
+
+| `manage_ansible_user` | `bool` | `true` | Whether or not to manage the ansible user. If set to false the rest of the options in this section are ignored.
+| `ansible_user` | `str` | `ansible` | The name of the ansible user
+| `ansible_user_password` | `str` | `null` | The encoded password for the ansible user (use `mkpasswd --method=SHA-512` to generate, if left as null it will lock the variable)
+| `ansible_user_regenerate_ssh_key` | `str` | `never` | Whether or not to regenerate the ansible user's ssh key. When set to never, if a key already exists (even if it does not match the specified type and size) it will not be regenerated. When set to `always` it will always regenerate the key. When set to `on_change` it will only regenerate the key if the type or size do not match the specified values.
+| `ansible_user_ssh_key_type` | `str` | `ssh-ed25519` | The type of ssh key to generate for the ansible user
+| `ansible_user_ssh_key_size` | `int` | `521` | The size of the ssh key to generate for the ansible user
+| `ansible_user_ssh_key_dir` | `str` | `~/.ssh` | The directory (on the computer running ansible) to store the ansible user's ssh key. This is by default set to ~/.ssh since it is assumed that the ansible nodes are more perminant that VM's would be and you will want to keep the key around for future use.
+| `ansible_user_ssh_key_name` | `str` | `id_ed25519-ansible` | The name of the ssh key to generate/use for the ansible user
+
+|===
+
+.Variables - proxmox-os
+[%autowidth]
+|===
+| Variable | Type | Default | Comments
+
+| `pve_additional_packages` | `list[str]` | `null` | A list of additional packages to install
+| `pve_no_subscription` | `bool` | `true` | If set to true this will disable the subscription nag screen, disable the enterprise apt source, and setup the community apt source. This is useful for homelab users who do not have a subscription.
+| `pve_no_subscription_apt_key_id` | `str` | `1140AF8F639E0C39` | The key id to use when importing the proxmox no subscription apt key
+| `pve_no_subscription_apt_key_url` | `str` | `https://enterprise.proxmox.com/debian/proxmox-release-bookworm.gpg` | The url to use when downloading the proxmox no subscription apt key
+| `pve_no_subscription_apt_source` | `str` | `deb http://download.proxmox.com/debian/pve bookworm pve-no-subscription` | The community apt source to use when `pve_no_subscription` is set to true
+| `update_system_packages` | `bool` | `true` | Whether or not to update the system packages
 
 
-[source,yaml]
-----
-variable: [OS-specific by default, see /vars directory]
-----
-Description
+|===
 
+.Variables - install-sdn
+[%autowidth]
+|===
+| Variable | Type | Default | Comments
 
-[source,yaml]
-----
-variable: [OS-specific by default, see /vars directory]
-----
-(Debian/Ubuntu only)
-Description
+| `pve_install_sdn` | `bool` | `false` | Whether or not to install the proxmox SDN module
+| `pve_sdn_package` | `str` | `pve-sdn` | The name of the proxmox SDN package to install
+
+|===
+
+.Variables - install-sdn
+[%autowidth]
+|===
+| Variable | Type | Default | Comments
+
+| `pve_watchdog_ipmi` | `bool` | `false` | Whether or not to install the proxmox SDN module (if set to false the rest of the variables in the section are ignored)
+| `pve_watchdog_ipmi_action` | `str` | `reset` | Action to take when the watchdog timer expires. Valid values are `power_cycle`, `power_off`, `reset`, `none`
+| `pve_watchdog_ipmi_package` | `str` | `ipmitool` | The name of the ipmi package to install. Currently the only supported package is `ipmitool`
+| `pve_watchdog_ipmi_enterprise_numbers_file` | `str` | `/usr/share/misc/enterprise-numbers.txt` | The path to the enterprise numbers file. This is used to lookup the ipmi manufacturer id
+| `pve_watchdog_ipmi_enterprise_numbers_url` | `str` | `https://www.iana.org/assignments/enterprise-numbers.txt` | The url to download the enterprise numbers file from
+
+|===
+
+.Internal Variables
+[%autowidth]
+|===
+| Variable | Type | Section | Default | Comments
+
+| `_pve_required_packages` | `list[str]` | `proxmox-os` | `["sudo", "numactl"]` | A list of packages that are required to be installed on the proxmox nodes.
+
+|===
+
 
 
 [[public_vars]]
@@ -188,77 +231,11 @@ even though there is no test for this exact distribution.
 |===
 | OS Family | Distribution | Distribution Release Date | Distribution End of Life | Accompanying Docker Image
 
-| Rocky
-| Rocky Linux 8 (https://www.howtogeek.com/devops/is-rocky-linux-the-new-centos/[RHEL/CentOS 8 in disguise])
-| 2021-06
-| 2029-05
-| https://github.com/geerlingguy/docker-rockylinux8-ansible/actions?query=workflow%3ABuild[image:https://github.com/geerlingguy/docker-rockylinux8-ansible/workflows/Build/badge.svg?branch=master[CI]]
-
-| Rocky
-| Rocky Linux 9
-| 2022-07
-| 2032-05
-| https://github.com/geerlingguy/docker-rockylinux9-ansible/actions?query=workflow%3ABuild[image:https://github.com/geerlingguy/docker-rockylinux9-ansible/workflows/Build/badge.svg?branch=master[CI]]
-
-| RedHat
-| Fedora 35
-| 2021-11
-| 2022-11
-| https://github.com/geerlingguy/docker-fedora35-ansible/actions?query=workflow%3ABuild[image:https://github.com/geerlingguy/docker-fedora35-ansible/workflows/Build/badge.svg?branch=master[CI]]
-
-| RedHat
-| Fedora 36
-| 2022-05
-| 2023-05
-| https://github.com/geerlingguy/docker-fedora36-ansible/actions?query=workflow%3ABuild[image:https://github.com/geerlingguy/docker-fedora36-ansible/workflows/Build/badge.svg?branch=master[CI]]
-
-| RedHat
-| Fedora 37
-| 2022-11
-| 2023-12
-| https://github.com/geerlingguy/docker-fedora37-ansible/actions?query=workflow%3ABuild[image:https://github.com/geerlingguy/docker-fedora37-ansible/workflows/Build/badge.svg?branch=master[CI]]
-
-| RedHat
-| Fedora 38
-| 2023-03
-| 2024-05
-| https://github.com/geerlingguy/docker-fedora38-ansible/actions?query=workflow%3ABuild[image:https://github.com/geerlingguy/docker-fedora38-ansible/workflows/Build/badge.svg?branch=master[CI]]
-
 | Debian
-| Ubuntu 1604
-| 2016-04
-| 2026-04
-| https://github.com/geerlingguy/docker-ubuntu1604-ansible/actions?query=workflow%3ABuild[image:https://github.com/geerlingguy/docker-ubuntu1604-ansible/workflows/Build/badge.svg?branch=master[CI]]
-
-| Debian
-| Ubuntu 1804
-| 2018-04
-| 2028-04
-| https://github.com/geerlingguy/docker-ubuntu1804-ansible/actions?query=workflow%3ABuild[image:https://github.com/geerlingguy/docker-ubuntu1804-ansible/workflows/Build/badge.svg?branch=master[CI]]
-
-| Debian
-| Ubuntu 2004
-| 2021-04
-| 2030-04
-| https://github.com/geerlingguy/docker-ubuntu2004-ansible/actions?query=workflow%3ABuild[image:https://github.com/geerlingguy/docker-ubuntu2004-ansible/workflows/Build/badge.svg?branch=master[CI]]
-
-| Debian
-| Ubuntu 2204
-| 2022-04
-| 2032-04
-| https://github.com/geerlingguy/docker-ubuntu2204-ansible/actions?query=workflow%3ABuild[image:https://github.com/geerlingguy/docker-ubuntu2204-ansible/workflows/Build/badge.svg?branch=master[CI]]
-
-| Debian
-| Debian 10
-| 2019-07
-| 2022-08
-| https://github.com/geerlingguy/docker-debian10-ansible/actions?query=workflow%3ABuild[image:https://github.com/geerlingguy/docker-debian10-ansible/workflows/Build/badge.svg?branch=master[CI]]
-
-| Debian
-| Debian 11
-| 2021-08
-| 2024-07~
-| https://github.com/geerlingguy/docker-debian11-ansible/actions?query=workflow%3ABuild[image:https://github.com/geerlingguy/docker-debian11-ansible/workflows/Build/badge.svg?branch=master[CI]]
+| Debian 12
+| 10 Jun 2023
+| 10 Jun 2026 (LTS: 10 Jun 2028)
+| https://github.com/geerlingguy/docker-debian12-ansible/actions?query=workflow%3ABuild[image:https://github.com/geerlingguy/docker-debian12-ansible/workflows/Build/badge.svg?branch=master[CI]]
 |===
 
 
@@ -270,8 +247,6 @@ https://github.com/ansible-collections/community.general#tested-with-ansible[
 support pattern of Ansible's `community.general` collection].
 As of writing this is:
 
-* 2.11 (Ansible 4)
-* 2.12 (Ansible 5)
 * 2.13 (Ansible 6)
 
 
@@ -513,14 +488,6 @@ aborting the commit themselves if a hook alarm'ed.
 
 You can also, for example, execute pre-commit's hooks at any time by running `pre-commit run --all-files`.
 ====
-
-
-[[contributing]]
-== 💪 Contributing
-image:https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square[PRs Welcome]
-https://open.vscode.dev/bvierra/ansible-role-proxmoxserver[image:https://img.shields.io/static/v1?logo=visualstudiocode&label=&message=Open%20in%20Visual%20Studio%20Code&labelColor=2c2c32&color=007acc&logoColor=007acc[Open in Visual Studio Code]]
-
-Unresolved directive in README.orig.adoc - include::CONTRIBUTING.adoc[]
 
 
 [[changelog]]

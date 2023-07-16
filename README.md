@@ -44,17 +44,250 @@ The [`community.general` collection](https://galaxy.ansible.com/community/genera
 
 # 📜 Role Variables
 
-    variable: default value
+<table>
+<caption>Variables - ansible-user</caption>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Variable</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Default</th>
+<th style="text-align: left;">Comments</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><p><code>manage_ansible_user</code></p></td>
+<td style="text-align: left;"><p><code>bool</code></p></td>
+<td style="text-align: left;"><p><code>true</code></p></td>
+<td style="text-align: left;"><p>Whether or not to manage the ansible user. If set to false the rest of the options in this section are ignored.</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>ansible_user</code></p></td>
+<td style="text-align: left;"><p><code>str</code></p></td>
+<td style="text-align: left;"><p><code>ansible</code></p></td>
+<td style="text-align: left;"><p>The name of the ansible user</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p><code>ansible_user_password</code></p></td>
+<td style="text-align: left;"><p><code>str</code></p></td>
+<td style="text-align: left;"><p><code>null</code></p></td>
+<td style="text-align: left;"><p>The encoded password for the ansible user (use <code>mkpasswd --method=SHA-512</code> to generate, if left as null it will lock the variable)</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>ansible_user_regenerate_ssh_key</code></p></td>
+<td style="text-align: left;"><p><code>str</code></p></td>
+<td style="text-align: left;"><p><code>never</code></p></td>
+<td style="text-align: left;"><p>Whether or not to regenerate the ansible user’s ssh key. When set to never, if a key already exists (even if it does not match the specified type and size) it will not be regenerated. When set to <code>always</code> it will always regenerate the key. When set to <code>on_change</code> it will only regenerate the key if the type or size do not match the specified values.</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p><code>ansible_user_ssh_key_type</code></p></td>
+<td style="text-align: left;"><p><code>str</code></p></td>
+<td style="text-align: left;"><p><code>ssh-ed25519</code></p></td>
+<td style="text-align: left;"><p>The type of ssh key to generate for the ansible user</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>ansible_user_ssh_key_size</code></p></td>
+<td style="text-align: left;"><p><code>int</code></p></td>
+<td style="text-align: left;"><p><code>521</code></p></td>
+<td style="text-align: left;"><p>The size of the ssh key to generate for the ansible user</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p><code>ansible_user_ssh_key_dir</code></p></td>
+<td style="text-align: left;"><p><code>str</code></p></td>
+<td style="text-align: left;"><p><code>~/.ssh</code></p></td>
+<td style="text-align: left;"><p>The directory (on the computer running ansible) to store the ansible user’s ssh key. This is by default set to ~/.ssh since it is assumed that the ansible nodes are more perminant that VM’s would be and you will want to keep the key around for future use.</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>ansible_user_ssh_key_name</code></p></td>
+<td style="text-align: left;"><p><code>str</code></p></td>
+<td style="text-align: left;"><p><code>id_ed25519-ansible</code></p></td>
+<td style="text-align: left;"><p>The name of the ssh key to generate/use for the ansible user</p></td>
+</tr>
+</tbody>
+</table>
 
-Description
+Variables - ansible-user
 
-    variable: [OS-specific by default, see /vars directory]
+<table>
+<caption>Variables - proxmox-os</caption>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Variable</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Default</th>
+<th style="text-align: left;">Comments</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><p><code>pve_additional_packages</code></p></td>
+<td style="text-align: left;"><p><code>list[str]</code></p></td>
+<td style="text-align: left;"><p><code>null</code></p></td>
+<td style="text-align: left;"><p>A list of additional packages to install</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>pve_no_subscription</code></p></td>
+<td style="text-align: left;"><p><code>bool</code></p></td>
+<td style="text-align: left;"><p><code>true</code></p></td>
+<td style="text-align: left;"><p>If set to true this will disable the subscription nag screen, disable the enterprise apt source, and setup the community apt source. This is useful for homelab users who do not have a subscription.</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p><code>pve_no_subscription_apt_key_id</code></p></td>
+<td style="text-align: left;"><p><code>str</code></p></td>
+<td style="text-align: left;"><p><code>1140AF8F639E0C39</code></p></td>
+<td style="text-align: left;"><p>The key id to use when importing the proxmox no subscription apt key</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>pve_no_subscription_apt_key_url</code></p></td>
+<td style="text-align: left;"><p><code>str</code></p></td>
+<td style="text-align: left;"><p><code>https://enterprise.proxmox.com/debian/proxmox-release-bookworm.gpg</code></p></td>
+<td style="text-align: left;"><p>The url to use when downloading the proxmox no subscription apt key</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p><code>pve_no_subscription_apt_source</code></p></td>
+<td style="text-align: left;"><p><code>str</code></p></td>
+<td style="text-align: left;"><p><code>deb http://download.proxmox.com/debian/pve bookworm pve-no-subscription</code></p></td>
+<td style="text-align: left;"><p>The community apt source to use when <code>pve_no_subscription</code> is set to true</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>update_system_packages</code></p></td>
+<td style="text-align: left;"><p><code>bool</code></p></td>
+<td style="text-align: left;"><p><code>true</code></p></td>
+<td style="text-align: left;"><p>Whether or not to update the system packages</p></td>
+</tr>
+</tbody>
+</table>
 
-Description
+Variables - proxmox-os
 
-    variable: [OS-specific by default, see /vars directory]
+<table>
+<caption>Variables - install-sdn</caption>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Variable</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Default</th>
+<th style="text-align: left;">Comments</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><p><code>pve_install_sdn</code></p></td>
+<td style="text-align: left;"><p><code>bool</code></p></td>
+<td style="text-align: left;"><p><code>false</code></p></td>
+<td style="text-align: left;"><p>Whether or not to install the proxmox SDN module</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>pve_sdn_package</code></p></td>
+<td style="text-align: left;"><p><code>str</code></p></td>
+<td style="text-align: left;"><p><code>pve-sdn</code></p></td>
+<td style="text-align: left;"><p>The name of the proxmox SDN package to install</p></td>
+</tr>
+</tbody>
+</table>
 
-(Debian/Ubuntu only) Description
+Variables - install-sdn
+
+<table>
+<caption>Variables - install-sdn</caption>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Variable</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Default</th>
+<th style="text-align: left;">Comments</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><p><code>pve_watchdog_ipmi</code></p></td>
+<td style="text-align: left;"><p><code>bool</code></p></td>
+<td style="text-align: left;"><p><code>false</code></p></td>
+<td style="text-align: left;"><p>Whether or not to install the proxmox SDN module (if set to false the rest of the variables in the section are ignored)</p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>pve_watchdog_ipmi_action</code></p></td>
+<td style="text-align: left;"><p><code>str</code></p></td>
+<td style="text-align: left;"><p><code>reset</code></p></td>
+<td style="text-align: left;"><p>Action to take when the watchdog timer expires. Valid values are <code>power_cycle</code>, <code>power_off</code>, <code>reset</code>, <code>none</code></p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p><code>pve_watchdog_ipmi_package</code></p></td>
+<td style="text-align: left;"><p><code>str</code></p></td>
+<td style="text-align: left;"><p><code>ipmitool</code></p></td>
+<td style="text-align: left;"><p>The name of the ipmi package to install. Currently the only supported package is <code>ipmitool</code></p></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><p><code>pve_watchdog_ipmi_enterprise_numbers_file</code></p></td>
+<td style="text-align: left;"><p><code>str</code></p></td>
+<td style="text-align: left;"><p><code>/usr/share/misc/enterprise-numbers.txt</code></p></td>
+<td style="text-align: left;"><p>The path to the enterprise numbers file. This is used to lookup the ipmi manufacturer id</p></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><p><code>pve_watchdog_ipmi_enterprise_numbers_url</code></p></td>
+<td style="text-align: left;"><p><code>str</code></p></td>
+<td style="text-align: left;"><p><code>https://www.iana.org/assignments/enterprise-numbers.txt</code></p></td>
+<td style="text-align: left;"><p>The url to download the enterprise numbers file from</p></td>
+</tr>
+</tbody>
+</table>
+
+Variables - install-sdn
+
+<table>
+<caption>Internal Variables</caption>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Variable</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Section</th>
+<th style="text-align: left;">Default</th>
+<th style="text-align: left;">Comments</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><p><code>_pve_required_packages</code></p></td>
+<td style="text-align: left;"><p><code>list[str]</code></p></td>
+<td style="text-align: left;"><p><code>proxmox-os</code></p></td>
+<td style="text-align: left;"><p><code>["sudo", "numactl"]</code></p></td>
+<td style="text-align: left;"><p>A list of packages that are required to be installed on the proxmox nodes.</p></td>
+</tr>
+</tbody>
+</table>
+
+Internal Variables
 
 # 📜 Facts/Variables defined by this role
 
@@ -137,88 +370,11 @@ A role may work on different **distributions**, like Red Hat Enterprise Linux (R
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;"><p>Rocky</p></td>
-<td style="text-align: left;"><p>Rocky Linux 8 (<a href="https://www.howtogeek.com/devops/is-rocky-linux-the-new-centos/">RHEL/CentOS 8 in disguise</a>)</p></td>
-<td style="text-align: left;"><p>2021-06</p></td>
-<td style="text-align: left;"><p>2029-05</p></td>
-<td style="text-align: left;"><p><a href="https://github.com/geerlingguy/docker-rockylinux8-ansible/actions?query=workflow%3ABuild"><img src="https://github.com/geerlingguy/docker-rockylinux8-ansible/workflows/Build/badge.svg?branch=master" alt="CI" /></a></p></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><p>Rocky</p></td>
-<td style="text-align: left;"><p>Rocky Linux 9</p></td>
-<td style="text-align: left;"><p>2022-07</p></td>
-<td style="text-align: left;"><p>2032-05</p></td>
-<td style="text-align: left;"><p><a href="https://github.com/geerlingguy/docker-rockylinux9-ansible/actions?query=workflow%3ABuild"><img src="https://github.com/geerlingguy/docker-rockylinux9-ansible/workflows/Build/badge.svg?branch=master" alt="CI" /></a></p></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><p>RedHat</p></td>
-<td style="text-align: left;"><p>Fedora 35</p></td>
-<td style="text-align: left;"><p>2021-11</p></td>
-<td style="text-align: left;"><p>2022-11</p></td>
-<td style="text-align: left;"><p><a href="https://github.com/geerlingguy/docker-fedora35-ansible/actions?query=workflow%3ABuild"><img src="https://github.com/geerlingguy/docker-fedora35-ansible/workflows/Build/badge.svg?branch=master" alt="CI" /></a></p></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><p>RedHat</p></td>
-<td style="text-align: left;"><p>Fedora 36</p></td>
-<td style="text-align: left;"><p>2022-05</p></td>
-<td style="text-align: left;"><p>2023-05</p></td>
-<td style="text-align: left;"><p><a href="https://github.com/geerlingguy/docker-fedora36-ansible/actions?query=workflow%3ABuild"><img src="https://github.com/geerlingguy/docker-fedora36-ansible/workflows/Build/badge.svg?branch=master" alt="CI" /></a></p></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><p>RedHat</p></td>
-<td style="text-align: left;"><p>Fedora 37</p></td>
-<td style="text-align: left;"><p>2022-11</p></td>
-<td style="text-align: left;"><p>2023-12</p></td>
-<td style="text-align: left;"><p><a href="https://github.com/geerlingguy/docker-fedora37-ansible/actions?query=workflow%3ABuild"><img src="https://github.com/geerlingguy/docker-fedora37-ansible/workflows/Build/badge.svg?branch=master" alt="CI" /></a></p></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><p>RedHat</p></td>
-<td style="text-align: left;"><p>Fedora 38</p></td>
-<td style="text-align: left;"><p>2023-03</p></td>
-<td style="text-align: left;"><p>2024-05</p></td>
-<td style="text-align: left;"><p><a href="https://github.com/geerlingguy/docker-fedora38-ansible/actions?query=workflow%3ABuild"><img src="https://github.com/geerlingguy/docker-fedora38-ansible/workflows/Build/badge.svg?branch=master" alt="CI" /></a></p></td>
-</tr>
-<tr class="odd">
 <td style="text-align: left;"><p>Debian</p></td>
-<td style="text-align: left;"><p>Ubuntu 1604</p></td>
-<td style="text-align: left;"><p>2016-04</p></td>
-<td style="text-align: left;"><p>2026-04</p></td>
-<td style="text-align: left;"><p><a href="https://github.com/geerlingguy/docker-ubuntu1604-ansible/actions?query=workflow%3ABuild"><img src="https://github.com/geerlingguy/docker-ubuntu1604-ansible/workflows/Build/badge.svg?branch=master" alt="CI" /></a></p></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><p>Debian</p></td>
-<td style="text-align: left;"><p>Ubuntu 1804</p></td>
-<td style="text-align: left;"><p>2018-04</p></td>
-<td style="text-align: left;"><p>2028-04</p></td>
-<td style="text-align: left;"><p><a href="https://github.com/geerlingguy/docker-ubuntu1804-ansible/actions?query=workflow%3ABuild"><img src="https://github.com/geerlingguy/docker-ubuntu1804-ansible/workflows/Build/badge.svg?branch=master" alt="CI" /></a></p></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><p>Debian</p></td>
-<td style="text-align: left;"><p>Ubuntu 2004</p></td>
-<td style="text-align: left;"><p>2021-04</p></td>
-<td style="text-align: left;"><p>2030-04</p></td>
-<td style="text-align: left;"><p><a href="https://github.com/geerlingguy/docker-ubuntu2004-ansible/actions?query=workflow%3ABuild"><img src="https://github.com/geerlingguy/docker-ubuntu2004-ansible/workflows/Build/badge.svg?branch=master" alt="CI" /></a></p></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><p>Debian</p></td>
-<td style="text-align: left;"><p>Ubuntu 2204</p></td>
-<td style="text-align: left;"><p>2022-04</p></td>
-<td style="text-align: left;"><p>2032-04</p></td>
-<td style="text-align: left;"><p><a href="https://github.com/geerlingguy/docker-ubuntu2204-ansible/actions?query=workflow%3ABuild"><img src="https://github.com/geerlingguy/docker-ubuntu2204-ansible/workflows/Build/badge.svg?branch=master" alt="CI" /></a></p></td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><p>Debian</p></td>
-<td style="text-align: left;"><p>Debian 10</p></td>
-<td style="text-align: left;"><p>2019-07</p></td>
-<td style="text-align: left;"><p>2022-08</p></td>
-<td style="text-align: left;"><p><a href="https://github.com/geerlingguy/docker-debian10-ansible/actions?query=workflow%3ABuild"><img src="https://github.com/geerlingguy/docker-debian10-ansible/workflows/Build/badge.svg?branch=master" alt="CI" /></a></p></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><p>Debian</p></td>
-<td style="text-align: left;"><p>Debian 11</p></td>
-<td style="text-align: left;"><p>2021-08</p></td>
-<td style="text-align: left;"><p>2024-07~</p></td>
-<td style="text-align: left;"><p><a href="https://github.com/geerlingguy/docker-debian11-ansible/actions?query=workflow%3ABuild"><img src="https://github.com/geerlingguy/docker-debian11-ansible/workflows/Build/badge.svg?branch=master" alt="CI" /></a></p></td>
+<td style="text-align: left;"><p>Debian 12</p></td>
+<td style="text-align: left;"><p>10 Jun 2023</p></td>
+<td style="text-align: left;"><p>10 Jun 2026 (LTS: 10 Jun 2028)</p></td>
+<td style="text-align: left;"><p><a href="https://github.com/geerlingguy/docker-debian12-ansible/actions?query=workflow%3ABuild"><img src="https://github.com/geerlingguy/docker-debian12-ansible/workflows/Build/badge.svg?branch=master" alt="CI" /></a></p></td>
 </tr>
 </tbody>
 </table>
@@ -226,10 +382,6 @@ A role may work on different **distributions**, like Red Hat Enterprise Linux (R
 # 🧪 Tested Ansible versions
 
 The tested ansible versions try to stay equivalent with the [ support pattern of Ansible’s `community.general` collection](https://github.com/ansible-collections/community.general#tested-with-ansible). As of writing this is:
-
-- 2.11 (Ansible 4)
-
-- 2.12 (Ansible 5)
 
 - 2.13 (Ansible 6)
 
@@ -381,12 +533,6 @@ Nevertheless, I recommend you to integrate pre-commit into your local developmen
 This can be done by cd’ing into the directory of your cloned project and running `pre-commit install`. Doing so will make git run pre-commit checks on every commit you make, aborting the commit themselves if a hook alarm’ed.
 
 You can also, for example, execute pre-commit’s hooks at any time by running `pre-commit run --all-files`.
-
-# 💪 Contributing
-
-![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square) [![Open in Visual Studio Code](https://img.shields.io/static/v1?logo=visualstudiocode&label=&message=Open%20in%20Visual%20Studio%20Code&labelColor=2c2c32&color=007acc&logoColor=007acc)](https://open.vscode.dev/bvierra/ansible-role-proxmoxserver)
-
-Unresolved directive in README.orig.adoc - include::CONTRIBUTING.adoc\[\]
 
 # 🗒 Changelog
 
