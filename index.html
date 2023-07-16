@@ -590,7 +590,6 @@ pre.rouge .gs {
 <li><a href="#pre-commit">ℹ️ General Linting and Styling Conventions</a></li>
 </ul>
 </li>
-<li><a href="#contributing">💪 Contributing</a></li>
 <li><a href="#changelog">🗒 Changelog</a></li>
 <li><a href="#license">⚖️ License</a></li>
 </ul>
@@ -657,31 +656,236 @@ must be installed on the Ansible controller.</p>
 <div class="sect1">
 <h2 id="variables">📜 Role Variables</h2>
 <div class="sectionbody">
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code data-lang="yaml"><span class="na">variable</span><span class="pi">:</span> <span class="s">default value</span></code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Description</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code data-lang="yaml"><span class="na">variable</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">OS-specific by default</span><span class="pi">,</span> <span class="nv">see /vars directory</span><span class="pi">]</span></code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Description</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code data-lang="yaml"><span class="na">variable</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">OS-specific by default</span><span class="pi">,</span> <span class="nv">see /vars directory</span><span class="pi">]</span></code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>(Debian/Ubuntu only)
-Description</p>
-</div>
+<table class="tableblock frame-all grid-all fit-content">
+<caption class="title">Table 1. Variables - ansible-user</caption>
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Variable</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Default</th>
+<th class="tableblock halign-left valign-top">Comments</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>manage_ansible_user</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>bool</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>true</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether or not to manage the ansible user. If set to false the rest of the options in this section are ignored.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ansible_user</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>str</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ansible</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The name of the ansible user</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ansible_user_password</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>str</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>null</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The encoded password for the ansible user (use <code>mkpasswd --method=SHA-512</code> to generate, if left as null it will lock the variable)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ansible_user_regenerate_ssh_key</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>str</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>never</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether or not to regenerate the ansible user&#8217;s ssh key. When set to never, if a key already exists (even if it does not match the specified type and size) it will not be regenerated. When set to <code>always</code> it will always regenerate the key. When set to <code>on_change</code> it will only regenerate the key if the type or size do not match the specified values.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ansible_user_ssh_key_type</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>str</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ssh-ed25519</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The type of ssh key to generate for the ansible user</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ansible_user_ssh_key_size</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>int</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>521</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The size of the ssh key to generate for the ansible user</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ansible_user_ssh_key_dir</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>str</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>~/.ssh</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The directory (on the computer running ansible) to store the ansible user&#8217;s ssh key. This is by default set to ~/.ssh since it is assumed that the ansible nodes are more perminant that VM&#8217;s would be and you will want to keep the key around for future use.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ansible_user_ssh_key_name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>str</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>id_ed25519-ansible</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The name of the ssh key to generate/use for the ansible user</p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all fit-content">
+<caption class="title">Table 2. Variables - proxmox-os</caption>
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Variable</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Default</th>
+<th class="tableblock halign-left valign-top">Comments</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pve_additional_packages</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>list[str]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>null</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A list of additional packages to install</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pve_no_subscription</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>bool</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>true</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If set to true this will disable the subscription nag screen, disable the enterprise apt source, and setup the community apt source. This is useful for homelab users who do not have a subscription.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pve_no_subscription_apt_key_id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>str</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>1140AF8F639E0C39</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The key id to use when importing the proxmox no subscription apt key</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pve_no_subscription_apt_key_url</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>str</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code><a href="https://enterprise.proxmox.com/debian/proxmox-release-bookworm.gpg" class="bare">https://enterprise.proxmox.com/debian/proxmox-release-bookworm.gpg</a></code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The url to use when downloading the proxmox no subscription apt key</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pve_no_subscription_apt_source</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>str</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>deb <a href="http://download.proxmox.com/debian/pve" class="bare">http://download.proxmox.com/debian/pve</a> bookworm pve-no-subscription</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The community apt source to use when <code>pve_no_subscription</code> is set to true</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>update_system_packages</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>bool</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>true</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether or not to update the system packages</p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all fit-content">
+<caption class="title">Table 3. Variables - install-sdn</caption>
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Variable</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Default</th>
+<th class="tableblock halign-left valign-top">Comments</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pve_install_sdn</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>bool</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>false</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether or not to install the proxmox SDN module</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pve_sdn_package</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>str</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pve-sdn</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The name of the proxmox SDN package to install</p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all fit-content">
+<caption class="title">Table 4. Variables - install-sdn</caption>
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Variable</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Default</th>
+<th class="tableblock halign-left valign-top">Comments</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pve_watchdog_ipmi</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>bool</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>false</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Whether or not to install the proxmox SDN module (if set to false the rest of the variables in the section are ignored)</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pve_watchdog_ipmi_action</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>str</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>reset</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Action to take when the watchdog timer expires. Valid values are <code>power_cycle</code>, <code>power_off</code>, <code>reset</code>, <code>none</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pve_watchdog_ipmi_package</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>str</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>ipmitool</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The name of the ipmi package to install. Currently the only supported package is <code>ipmitool</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pve_watchdog_ipmi_enterprise_numbers_file</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>str</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>/usr/share/misc/enterprise-numbers.txt</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The path to the enterprise numbers file. This is used to lookup the ipmi manufacturer id</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>pve_watchdog_ipmi_enterprise_numbers_url</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>str</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code><a href="https://www.iana.org/assignments/enterprise-numbers.txt" class="bare">https://www.iana.org/assignments/enterprise-numbers.txt</a></code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The url to download the enterprise numbers file from</p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all fit-content">
+<caption class="title">Table 5. Internal Variables</caption>
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Variable</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Section</th>
+<th class="tableblock halign-left valign-top">Default</th>
+<th class="tableblock halign-left valign-top">Comments</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>_pve_required_packages</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>list[str]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>proxmox-os</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>["sudo", "numactl"]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A list of packages that are required to be installed on the proxmox nodes.</p></td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <div class="sect1">
@@ -815,88 +1019,11 @@ even though there is no test for this exact distribution.</p>
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Rocky</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Rocky Linux 8 (<a href="https://www.howtogeek.com/devops/is-rocky-linux-the-new-centos/">RHEL/CentOS 8 in disguise</a>)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">2021-06</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">2029-05</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/geerlingguy/docker-rockylinux8-ansible/actions?query=workflow%3ABuild"><span class="image"><img src="https://github.com/geerlingguy/docker-rockylinux8-ansible/workflows/Build/badge.svg?branch=master" alt="CI"></span></a></p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Rocky</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Rocky Linux 9</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">2022-07</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">2032-05</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/geerlingguy/docker-rockylinux9-ansible/actions?query=workflow%3ABuild"><span class="image"><img src="https://github.com/geerlingguy/docker-rockylinux9-ansible/workflows/Build/badge.svg?branch=master" alt="CI"></span></a></p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">RedHat</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Fedora 35</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">2021-11</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">2022-11</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/geerlingguy/docker-fedora35-ansible/actions?query=workflow%3ABuild"><span class="image"><img src="https://github.com/geerlingguy/docker-fedora35-ansible/workflows/Build/badge.svg?branch=master" alt="CI"></span></a></p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">RedHat</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Fedora 36</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">2022-05</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">2023-05</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/geerlingguy/docker-fedora36-ansible/actions?query=workflow%3ABuild"><span class="image"><img src="https://github.com/geerlingguy/docker-fedora36-ansible/workflows/Build/badge.svg?branch=master" alt="CI"></span></a></p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">RedHat</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Fedora 37</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">2022-11</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">2023-12</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/geerlingguy/docker-fedora37-ansible/actions?query=workflow%3ABuild"><span class="image"><img src="https://github.com/geerlingguy/docker-fedora37-ansible/workflows/Build/badge.svg?branch=master" alt="CI"></span></a></p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">RedHat</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Fedora 38</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">2023-03</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">2024-05</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/geerlingguy/docker-fedora38-ansible/actions?query=workflow%3ABuild"><span class="image"><img src="https://github.com/geerlingguy/docker-fedora38-ansible/workflows/Build/badge.svg?branch=master" alt="CI"></span></a></p></td>
-</tr>
-<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Debian</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Ubuntu 1604</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">2016-04</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">2026-04</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/geerlingguy/docker-ubuntu1604-ansible/actions?query=workflow%3ABuild"><span class="image"><img src="https://github.com/geerlingguy/docker-ubuntu1604-ansible/workflows/Build/badge.svg?branch=master" alt="CI"></span></a></p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Debian</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Ubuntu 1804</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">2018-04</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">2028-04</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/geerlingguy/docker-ubuntu1804-ansible/actions?query=workflow%3ABuild"><span class="image"><img src="https://github.com/geerlingguy/docker-ubuntu1804-ansible/workflows/Build/badge.svg?branch=master" alt="CI"></span></a></p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Debian</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Ubuntu 2004</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">2021-04</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">2030-04</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/geerlingguy/docker-ubuntu2004-ansible/actions?query=workflow%3ABuild"><span class="image"><img src="https://github.com/geerlingguy/docker-ubuntu2004-ansible/workflows/Build/badge.svg?branch=master" alt="CI"></span></a></p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Debian</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Ubuntu 2204</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">2022-04</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">2032-04</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/geerlingguy/docker-ubuntu2204-ansible/actions?query=workflow%3ABuild"><span class="image"><img src="https://github.com/geerlingguy/docker-ubuntu2204-ansible/workflows/Build/badge.svg?branch=master" alt="CI"></span></a></p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Debian</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Debian 10</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">2019-07</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">2022-08</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/geerlingguy/docker-debian10-ansible/actions?query=workflow%3ABuild"><span class="image"><img src="https://github.com/geerlingguy/docker-debian10-ansible/workflows/Build/badge.svg?branch=master" alt="CI"></span></a></p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Debian</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Debian 11</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">2021-08</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">2024-07~</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/geerlingguy/docker-debian11-ansible/actions?query=workflow%3ABuild"><span class="image"><img src="https://github.com/geerlingguy/docker-debian11-ansible/workflows/Build/badge.svg?branch=master" alt="CI"></span></a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Debian 12</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">10 Jun 2023</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">10 Jun 2026 (LTS: 10 Jun 2028)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="https://github.com/geerlingguy/docker-debian12-ansible/actions?query=workflow%3ABuild"><span class="image"><img src="https://github.com/geerlingguy/docker-debian12-ansible/workflows/Build/badge.svg?branch=master" alt="CI"></span></a></p></td>
 </tr>
 </tbody>
 </table>
@@ -913,12 +1040,6 @@ As of writing this is:</p>
 </div>
 <div class="ulist">
 <ul>
-<li>
-<p>2.11 (Ansible 4)</p>
-</li>
-<li>
-<p>2.12 (Ansible 5)</p>
-</li>
 <li>
 <p>2.13 (Ansible 6)</p>
 </li>
@@ -1284,18 +1405,6 @@ aborting the commit themselves if a hook alarm&#8217;ed.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="contributing">💪 Contributing</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p><span class="image"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square" alt="PRs Welcome"></span>
-<a href="https://open.vscode.dev/bvierra/ansible-role-proxmoxserver"><span class="image"><img src="https://img.shields.io/static/v1?logo=visualstudiocode&amp;label=&amp;message=Open%20in%20Visual%20Studio%20Code&amp;labelColor=2c2c32&amp;color=007acc&amp;logoColor=007acc" alt="Open in Visual Studio Code"></span></a></p>
-</div>
-<div class="paragraph">
-<p>Unresolved directive in README.orig.adoc - include::CONTRIBUTING.adoc[]</p>
-</div>
-</div>
-</div>
-<div class="sect1">
 <h2 id="changelog">🗒 Changelog</h2>
 <div class="sectionbody">
 <div class="paragraph">
@@ -1344,7 +1453,7 @@ SOFTWARE.</pre>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-07-16 12:40:48 UTC
+Last updated 2023-07-16 13:42:43 UTC
 </div>
 </div>
 </body>
